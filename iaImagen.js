@@ -7,32 +7,26 @@ const configuration = new Configuration({
   apiKey: process.env.GTP_TOKEN,
 });
 const openai = new OpenAIApi(configuration);
-async function ask(prompt) {
-    let response;
+
+async function askImage(prompt) {
   try {
-    response = await openai.createCompletion({
-      model: "text-davinci-003",
+    const response = await openai.createImage({
       prompt,
-      temperature: 0.7,
-      max_tokens: 150,
-      top_p: 1,
-      frequency_penalty: 0.2,
-      presence_penalty: 0.0,
+      n: 1,
+      size: "256x256",
     });
+    const image_url = response.data.data[0].url;
+    return image_url;
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);
       console.log(error.response.data);
-      response = error.response.data;
     } else {
       console.log(error.message);
-      response = error.message;
     }
   }
-  const answer = response.data.choices[0].text;
-  return answer;
 }
 
 module.exports = {
-  ask,
+  askImage,
 };
