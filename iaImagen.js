@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
+
 //In ai.js
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
