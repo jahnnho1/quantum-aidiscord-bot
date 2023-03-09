@@ -5,17 +5,33 @@ const mongoose = require("mongoose");
 const mongoUri = process.env.MONGO_URI;
 mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-function almacenarInfoBD(prompt, respuestaIA, username) {
+function almacenarInfoBD(prompt, respuestaIA, username, idDiscord) {
   const myModel = new UserRequest({
     user: username,
+    idDiscord: idDiscord,
     question: prompt,
     answer: respuestaIA,
   });
-
   myModel
     .save()
     .then(() => console.log("Prompt guardado en la base de datos"))
     .catch((error) => console.error(error));
+}
+
+async function userCountPeticionRealizadas(usuario) {
+  return new Promise((resolve, reject) => {
+    UserRequest.countDocuments({ user: usuario })
+      .then((count) => {
+        console.log(
+          `Hay ${count} documentos en la tabla que pertenecen al usuario ${usuario}.`
+        );
+        resolve(count);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+  });
 }
 
 const { Configuration, OpenAIApi } = require("openai");
@@ -38,7 +54,7 @@ async function ask(prompt, data) {
     almacenarInfoBD(
       prompt,
       response.data.choices[0].text,
-      data.author.username
+      data.author.username, data.author.id
     );
   } catch (error) {
     if (error.response) {
@@ -56,4 +72,5 @@ async function ask(prompt, data) {
 
 module.exports = {
   ask,
+  userCountPeticionRealizadas,
 };

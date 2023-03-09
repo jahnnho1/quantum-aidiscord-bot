@@ -5,6 +5,10 @@ const userRequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  idDiscord: {
+    type: String,
+    required: true,
+  },
   question: {
     type: String,
     required: true,
