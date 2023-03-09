@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userRequestSchema = new mongoose.Schema({
+const promptSchema = new mongoose.Schema({
   user: {
     type: String,
     required: true,
@@ -9,15 +9,11 @@ const userRequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  requestType: {
+  prompt: {
     type: String,
     required: true,
   },
-  question: {
-    type: String,
-    required: true,
-  },
-  answer: {
+  nivel: {
     type: String,
     required: true,
   },
@@ -27,5 +23,5 @@ const userRequestSchema = new mongoose.Schema({
   },
 });
 
-const UserRequest = mongoose.model('usersRequest', userRequestSchema);
-module.exports = UserRequest;
+const PromptClass = mongoose.model('promps', promptSchema);
+module.exports = PromptClass;

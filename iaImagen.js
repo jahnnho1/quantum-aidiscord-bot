@@ -1,15 +1,13 @@
 const dotenv = require("dotenv");
 dotenv.config();
-
-
-//In ai.js
+const { almacenarInfoBD } = require("./peticiones/funcionesUsers.js");
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
   apiKey: process.env.GTP_TOKEN,
 });
 const openai = new OpenAIApi(configuration);
 
-async function askImage(prompt) {
+async function askImage(prompt, data) {
   try {
     const response = await openai.createImage({
       prompt,
@@ -18,6 +16,11 @@ async function askImage(prompt) {
       
     });
     const image_url = response.data.data[0].url;
+    almacenarInfoBD(
+      prompt,
+      image_url,
+      data.author.username, data.author.id, 'image'
+    );
     return image_url;
   } catch (error) {
     if (error.response) {
