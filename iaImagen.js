@@ -7,20 +7,22 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-async function askImage(prompt, data) {
+async function askImage(data) {
+  const size = "512x512";
+  const prompt = data.content.substring(7);
+  const n = 1;
+  const username = data.author.username;
+  const discordId = data.author.id;
+  const request = "image";
+
   try {
     const response = await openai.createImage({
       prompt,
-      n: 1,
-      size: "512x512",
-      
+      n,
+      size,
     });
     const image_url = response.data.data[0].url;
-    almacenarInfoBD(
-      prompt,
-      image_url,
-      data.author.username, data.author.id, 'image'
-    );
+    almacenarInfoBD(prompt, image_url, username, discordId, request);
     return image_url;
   } catch (error) {
     if (error.response) {

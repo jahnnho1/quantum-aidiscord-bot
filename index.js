@@ -1,7 +1,10 @@
 const dotenv = require("dotenv");
 const { ask } = require("./ai.js");
 const { askImage } = require("./iaImagen.js");
-const { userCountPeticionRealizadas, guardarPrompt } = require("./peticiones/funcionesUsers.js");
+const {
+  userCountPeticionRealizadas,
+  guardarPrompt,
+} = require("./peticiones/funcionesUsers.js");
 
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 dotenv.config();
@@ -19,33 +22,30 @@ client.on("ready", async () => {
   console.log(`Ready! Logged in as ${client.user.tag}`);
 });
 
-client.on(Events.MessageCreate, async (message) => {
-  if (message.content.substring(0, 4) === "!ask") {
-    console.log(`entro a texto`);
-    const prompt = message.content.substring(1);
-    const answer = await ask(prompt, message);
+client.on(Events.MessageCreate, async (data) => {
+  if (data.content.substring(0, 4) === "!ask") {
+    console.log(`entro a solicitud de pregunta`);
+    const answer = await ask(data);
     console.log(answer);
     client.channels
-      .fetch(message.channelId)
+      .fetch(data.channelId)
       .then((channel) => channel.send(`${answer}`));
   }
-  if (message.content.substring(0, 6) === "!image") {
+  if (data.content.substring(0, 6) === "!image") {
     console.log(`Entro a imagen`);
-    const prompt = message.content.substring(7);
-    const answer = await askImage(prompt, message);
+    const answer = await askImage(data);
     console.log(answer);
     client.channels
-      .fetch(message.channelId)
+      .fetch(data.channelId)
       .then((channel) => channel.send(`${answer}`));
   }
-  if (message.content.substring(0, 3) === "!yo") {
-    console.log();
+  if (data.content.substring(0, 3) === "!yo") {
     console.log(`Entro a mis stats`);
-    const userId = `<@${message.author.id}>`;
-    await userCountPeticionRealizadas(message.author.username)
+    const userId = `<@${data.author.id}>`;
+    await userCountPeticionRealizadas(data)
       .then((count) => {
         client.channels
-          .fetch(message.channelId)
+          .fetch(data.channelId)
           .then((channel) =>
             channel.send(
               `El Veneco ${userId}! ha realizado ${count} peticiones. `
@@ -56,15 +56,13 @@ client.on(Events.MessageCreate, async (message) => {
         console.log(err);
       });
   }
-  if (message.content.substring(0, 15) === "!guardarPrompt ") {
-    console.log();
+  if (data.content.substring(0, 15) === "!guardarPrompt ") {
     console.log(`Entro a guardar prompt`);
-    const userId = `<@${message.author.id}>`;
-    const prompt = message.content.substring(15);
-    await guardarPrompt(prompt, message.author.username, message.author.id)
+    const userId = `<@${data.author.id}>`;
+    await guardarPrompt(data)
       .then((estado) => {
         client.channels
-          .fetch(message.channelId)
+          .fetch(data.channelId)
           .then((channel) =>
             channel.send(
               `El prompt creado por ${userId}! fue almacenado con ${estado}. `
@@ -75,8 +73,6 @@ client.on(Events.MessageCreate, async (message) => {
         console.log(err);
       });
   }
-
-
 });
 
 client.login(process.env.DISCORD_TOKEN);

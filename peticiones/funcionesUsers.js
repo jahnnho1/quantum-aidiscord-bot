@@ -26,13 +26,10 @@ function almacenarInfoBD(
     .catch((error) => console.error(error));
 }
 
-async function userCountPeticionRealizadas(usuario) {
+async function userCountPeticionRealizadas(data) {
   return new Promise((resolve, reject) => {
-    UserRequest.countDocuments({ user: usuario })
+    UserRequest.countDocuments({ user: data.author.username })
       .then((count) => {
-        console.log(
-          `Hay ${count} documentos en la tabla que pertenecen al usuario ${usuario}.`
-        );
         resolve(count);
       })
       .catch((err) => {
@@ -42,10 +39,13 @@ async function userCountPeticionRealizadas(usuario) {
   });
 }
 
-async function guardarPrompt(prompt, username, idDiscord) {
+async function guardarPrompt(data) {
+  const prompt = data.content.substring(15);
+  const user = data.author.username;
+  const idDiscord = data.author.id;
   const objPrompt = new PromptClass({
-    user: username,
-    idDiscord: idDiscord,
+    user,
+    idDiscord,
     prompt,
     nivel: "1",
   });

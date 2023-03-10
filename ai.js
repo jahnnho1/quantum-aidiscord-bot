@@ -7,38 +7,50 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-async function ask(prompt, data) {
-  prompt = prompt.replace("ask", "");
-  let response;
+async function ask(data) {
+  const model = "text-davinci-003";
+  const prompt = data.content.substring(4);
+  const temperature = 0.7;
+  const max_tokens = 250;
+  const top_p = 1;
+  const frequency_penalty = 0.2;
+  const presence_penalty = 0.0;
+  const username = data.author.username;
+  const discordId = data.author.id;
+  const request = "ask";
+
   try {
     response = await openai.createCompletion({
-      model: "text-davinci-003",
+      model,
       prompt,
-      temperature: 0.7,
-      max_tokens: 250,
-      top_p: 1,
-      frequency_penalty: 0.2,
-      presence_penalty: 0.0,
+      temperature,
+      max_tokens,
+      top_p,
+      frequency_penalty,
+      presence_penalty,
     });
+
     almacenarInfoBD(
       prompt,
       response.data.choices[0].text,
-      data.author.username, data.author.id, 'ask'
+      username,
+      discordId,
+      request
     );
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);
       console.log(error.response.data);
-      response = error.response.data;
     } else {
       console.log(error.message);
-      response = error.message;
     }
   }
-  const answer = response.data.choices[0].text;
+  const answer =
+    response.data.choices[0].text ||
+    "This content may violate our content policy. ";
   return answer;
 }
 
 module.exports = {
-  ask
+  ask,
 };
