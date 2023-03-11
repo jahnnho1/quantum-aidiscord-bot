@@ -4,7 +4,7 @@ const { askImage } = require("./iaImagen.js");
 const {
   userCountPeticionRealizadas,
   guardarPrompt,
-} = require("./peticiones/funcionesUsers.js");
+} = require("./utils/funcionesUsers.js");
 
 const {
   Client,
@@ -25,13 +25,13 @@ const client = new Client({
 });
 
 client.on("ready", async () => {
-  client.user.setActivity("Veneco tu abuela!");
+  client.user.setActivity("Bot humanitario.");
   console.log(`Ready! Logged in as ${client.user.tag}`);
 });
 
 client.on(Events.MessageCreate, async (data) => {
   if (data.content.startsWith(`${prefix}ask`)) {
-    console.log(`entro a solicitud de pregunta`);
+    console.log(`An inquiry request was submitted."`);
     const answer = await ask(data);
     console.log(answer);
     client.channels
@@ -39,7 +39,7 @@ client.on(Events.MessageCreate, async (data) => {
       .then((channel) => channel.send(`${answer}`));
   }
   if (data.content.startsWith(`${prefix}image`)) {
-    console.log(`Entro a imagen`);
+    console.log(`An image request was submitted`);
     const answer = await askImage(data);
     console.log(answer);
     client.channels
@@ -48,7 +48,7 @@ client.on(Events.MessageCreate, async (data) => {
   }
 
   if (data.content.startsWith(`${prefix}yo`)) {
-    console.log(`Entro a mis stats`);
+    console.log(`A request to review user statistics was submitted.`);
     const userId = `<@${data.author.id}>`;
     await userCountPeticionRealizadas(data)
       .then((count) => {
@@ -56,7 +56,7 @@ client.on(Events.MessageCreate, async (data) => {
           .fetch(data.channelId)
           .then((channel) =>
             channel.send(
-              `El Veneco ${userId}! ha realizado ${count} peticiones. `
+              `El usuario ${userId}! ha realizado ${count} peticiones. `
             )
           );
       })
@@ -65,7 +65,7 @@ client.on(Events.MessageCreate, async (data) => {
       });
   }
   if (data.content.startsWith(`${prefix}guardarPrompt`)) {
-    console.log(`Entro a guardar prompt`);
+    console.log(`A request to save prompt was submitted.`);
     const userId = `<@${data.author.id}>`;
     await guardarPrompt(data)
       .then((estado) => {
@@ -82,6 +82,8 @@ client.on(Events.MessageCreate, async (data) => {
       });
   }
 
+
+  // ! Request is under development.
   if (data.content.startsWith(`${prefix}total`)) {
     const exampleEmbed = new EmbedBuilder()
       .setColor(0x00ae86)
@@ -96,7 +98,6 @@ client.on(Events.MessageCreate, async (data) => {
       .setThumbnail("https://i.imgur.com/AfFp7pu.png")
       .addFields(
         { name: "Regular field title", value: "Some value here" },
-        //{ name: "\u200B", value: "\u200B" },
         {
           name: "Inline field title",
           value: "Some value herexxxxxxxxxxxxxx",
@@ -114,6 +115,8 @@ client.on(Events.MessageCreate, async (data) => {
       .then((channel) => channel.send({ embeds: [exampleEmbed] }));
   }
 
+
+  // ! Request is under development.
   if (data.content.startsWith(`${prefix}firma`)) {
     const file = new AttachmentBuilder("./assets/firma.png");
 
@@ -132,6 +135,7 @@ client.on(Events.MessageCreate, async (data) => {
       );
   }
 
+  // ! Request is under development.
   if (data.content.startsWith(`${prefix}test`)) {
     const mencionado = data.mentions.users.first();
     const id = mencionado.id;

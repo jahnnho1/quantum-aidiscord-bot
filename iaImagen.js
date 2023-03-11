@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
 dotenv.config();
-const { almacenarInfoBD } = require("./peticiones/funcionesUsers.js");
+const { almacenarInfoBD } = require("./utils/funcionesUsers.js");
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
   apiKey: process.env.GTP_TOKEN,
@@ -14,7 +14,6 @@ async function askImage(data) {
   const username = data.author.username;
   const discordId = data.author.id;
   const request = "image";
-
   try {
     const response = await openai.createImage({
       prompt,

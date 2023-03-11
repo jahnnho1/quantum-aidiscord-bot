@@ -22,7 +22,7 @@ function almacenarInfoBD(
   });
   objUserRequest
     .save()
-    .then(() => console.log("Prompt guardado en la base de datos"))
+    .then(() => console.log("The prompt has been saved in the database."))
     .catch((error) => console.error(error));
 }
 
@@ -52,7 +52,7 @@ async function guardarPrompt(data) {
   return new Promise((resolve, reject) => {
     objPrompt
       .save()
-      .then(() => resolve("exito"))
+      .then(() => resolve("success"))
       .catch((error) => reject("error"));
   });
 }

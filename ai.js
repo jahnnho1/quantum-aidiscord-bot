@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
 dotenv.config();
-const { almacenarInfoBD } = require("./peticiones/funcionesUsers.js");
+const { almacenarInfoBD } = require("./utils/funcionesUsers.js");
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
   apiKey: process.env.GTP_TOKEN,
@@ -29,15 +29,13 @@ async function ask(data) {
       frequency_penalty,
       presence_penalty,
     });
-
- /*   almacenarInfoBD(
+    almacenarInfoBD(
       prompt,
       response.data.choices[0].text,
       username,
       discordId,
       request
     );
-    */
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);
