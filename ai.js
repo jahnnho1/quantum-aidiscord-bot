@@ -11,7 +11,7 @@ async function ask(data) {
   const model = "text-davinci-003";
   const prompt = data.content.substring(4);
   const temperature = 0.7;
-  const max_tokens = 250;
+  const max_tokens = 750;
   const top_p = 1;
   const frequency_penalty = 0.2;
   const presence_penalty = 0.0;
@@ -30,13 +30,14 @@ async function ask(data) {
       presence_penalty,
     });
 
-    almacenarInfoBD(
+ /*   almacenarInfoBD(
       prompt,
       response.data.choices[0].text,
       username,
       discordId,
       request
     );
+    */
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);
