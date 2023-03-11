@@ -29,9 +29,23 @@ To run this project locally, you will need to have the following:
 
 Once you have these prerequisites, you can clone this repository and set up the necessary configuration files with your API keys and database credentials.
 
+### CREAR ARCHIVO .ENV 
+
+- DISCORD_TOKEN =  "private credentials"
+- GTP_TOKEN = "private credentials"
+- MONGO_URI = "private credentials"
+- PREFIX = "/" #### puede cambiarlo si usted desea
+
 ## Usage
 
 To use the bot, users will need to send specific commands in the Discord chat. The bot will then generate an image or respond with text based on the user's query. Additionally, all user queries will be stored in the MongoDB database for future retrieval and improved responses.
+
+#### - !ask command
+- The ask slash command allows users to ask any question and receive an exhaustive answer. Simply type !ask followed by your question in a Discord channel where the bot is present, and the bot will use OpenAI's AI models to provide an answer.
+
+#### - !image command
+- The image slash command allows users to generate an image using OpenAI's DALL·E technology. Simply type !image followed by a description of the image you want to generate in a Discord channel where the bot is present, and the bot will send you an embedded message with the generated image.
+
 
 ## Contributions
 
@@ -39,7 +53,7 @@ Contributions to this project are welcome. If you have any suggestions or ideas 
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the [MIT License](https://opensource.org/license/mit/ "MIT License") file for details.
 
 ---
 
@@ -71,9 +85,24 @@ Para ejecutar este proyecto en tu máquina local, necesitarás lo siguiente:
 
 Una vez que tengas estos requisitos previos, puedes clonar este repositorio y configurar los archivos de configuración necesarios con tus claves de API y credenciales de la base de datos.
 
+### CREAR ARCHIVO .ENV 
+
+- DISCORD_TOKEN =  "private credentials"
+- GTP_TOKEN = "private credentials"
+- MONGO_URI = "private credentials"
+- PREFIX = "/" #### puede cambiarlo si usted desea
+
 ## Uso
 
 Para usar el bot, los usuarios deberán enviar comandos específicos en el chat de Discord. El bot generará una imagen o responderá con texto en función de la consulta del usuario. Además, todas las consultas de los usuarios se almacenarán en la base de datos MongoDB para su recuperación en el futuro y para mejorar las respuestas.
+
+#### - Comando !ask
+El comando slash !ask permite a los usuarios hacer cualquier pregunta y recibir una respuesta exhaustiva. Simplemente escriba !ask seguido de su pregunta en un canal de Discord donde esté presente el bot, y el bot utilizará los modelos de inteligencia artificial de OpenAI para proporcionar una respuesta.
+
+#### - Comando !image
+El comando slash !image permite a los usuarios generar una imagen utilizando la tecnología DALL·E de OpenAI. Simplemente escriba !image seguido de una descripción de la imagen que desea generar en un canal de Discord donde esté presente el bot, y el bot le enviará un mensaje incrustado con la imagen generada.
+
+
 
 ## Contribuciones
 
@@ -81,5 +110,7 @@ Las contribuciones a este proyecto son bienvenidas. Si tienes alguna sugerencia 
 
 ## Licencia
 
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para obtener más detalles.
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [MIT License](https://opensource.org/license/mit/ "MIT License") para obtener más detalles.
+
+
 
