@@ -1,7 +1,9 @@
 # Discord Bot with OpenAI and MongoDB
 
+![](https://github.com/jahnnho1/quantum-aidiscord-bot/blob/master/assets/firma.png?raw=true)
 
-This project aims to create a Discord bot that utilizes OpenAI's artificial intelligence technology, specifically the DALL-E model, to generate images and respond to user inquiries. Additionally, the bot will have the capability to store and retrieve user queries in a MongoDB database.
+
+This project aims to create a Discord bot that utilizes OpenAI's artificial intelligence technology, specifically the DALL-E model, to generate images and respond to user inquiries. Additionally, the bot will have the capability to store and retrieve user queries in a MongoDB database. 
 
 ## Features
 
