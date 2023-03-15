@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-const { ask } = require("./ai.js");
+const { ask, conversationChat } = require("./ai.js");
 const { askImage } = require("./iaImagen.js");
 const {
   userCountPeticionRealizadas,
@@ -38,6 +38,7 @@ client.on(Events.MessageCreate, async (data) => {
       .fetch(data.channelId)
       .then((channel) => channel.send(`${answer}`));
   }
+
   if (data.content.startsWith(`${prefix}image`)) {
     console.log(`An image request was submitted`);
     const answer = await askImage(data);
@@ -64,6 +65,7 @@ client.on(Events.MessageCreate, async (data) => {
         console.log(err);
       });
   }
+
   if (data.content.startsWith(`${prefix}guardarPrompt`)) {
     console.log(`A request to save prompt was submitted.`);
     const userId = `<@${data.author.id}>`;
@@ -82,6 +84,16 @@ client.on(Events.MessageCreate, async (data) => {
       });
   }
 
+  if (data.content.startsWith(`${prefix}chat`)) {
+    console.log(`A request to chat conversation was submitted.`);
+    const answer = await conversationChat(data);
+    client.channels
+      .fetch(data.channelId)
+      .then((channel) => channel.send(`${answer}`))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   // ! Request is under development.
   if (data.content.startsWith(`${prefix}total`)) {
@@ -114,7 +126,6 @@ client.on(Events.MessageCreate, async (data) => {
       .fetch(data.channelId)
       .then((channel) => channel.send({ embeds: [exampleEmbed] }));
   }
-
 
   // ! Request is under development.
   if (data.content.startsWith(`${prefix}firma`)) {

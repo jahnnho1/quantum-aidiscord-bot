@@ -2,6 +2,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 const UserRequest = require("../model/userRequest");
 const PromptClass = require("../model/prompt");
+const ConversacionRequest = require("../model/conversacion");
+
 const mongoose = require("mongoose");
 const mongoUri = process.env.MONGO_URI;
 mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -57,8 +59,31 @@ async function guardarPrompt(data) {
   });
 }
 
+function almacenarConversacionBD(
+  idConversacion,
+  username,
+  discordId,
+  requestType,
+  prompt,
+  answer
+) {
+  const objUserRequest = new ConversacionRequest({
+    idConversacion,
+    username,
+    discordId,
+    requestType,
+    prompt,
+    answer,
+  });
+  objUserRequest
+    .save()
+    .then(() => console.log("The prompt has been saved in the database."))
+    .catch((error) => console.error(error));
+}
+
 module.exports = {
   userCountPeticionRealizadas,
   almacenarInfoBD,
   guardarPrompt,
+  almacenarConversacionBD,
 };
