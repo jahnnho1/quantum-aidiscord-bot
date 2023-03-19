@@ -60,20 +60,18 @@ async function guardarPrompt(data) {
 }
 
 function almacenarConversacionBD(
-  idConversacion,
-  username,
+  userId,
   discordId,
-  requestType,
-  prompt,
-  answer
+  username,
+  messages,
+  requestType
 ) {
   const objUserRequest = new ConversacionRequest({
-    idConversacion,
-    username,
+    userId,
     discordId,
+    username,
+    messages,
     requestType,
-    prompt,
-    answer,
   });
   objUserRequest
     .save()

@@ -62,6 +62,7 @@ async function conversationChat(data) {
   const history = userHistories.get(userId) || [];
   const userMessage = { role: "user", content: prompt };
   const requestType = "conversation";
+  const max_tokens = 500;
 
   // Agregar el mensaje del usuario al historial
   history.push(userMessage);
@@ -69,6 +70,7 @@ async function conversationChat(data) {
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: history,
+    max_tokens
   });
 
   const answer = response.data.choices[0].message.content;
@@ -79,12 +81,11 @@ async function conversationChat(data) {
     history.push(iaMessage);
     userHistories.set(userId, history);
     almacenarConversacionBD(
-      response.data.id,
-      username,
+      userId,
       discordId,
-      requestType,
-      prompt,
-      answer
+      username,
+      history,
+      requestType
     );
     console.log(userHistories);
     return answer;

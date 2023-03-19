@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const conversacionRequest = new mongoose.Schema({
-  idConversacion: {
+  userId: {
     type: String,
     required: true,
   },
@@ -13,15 +13,13 @@ const conversacionRequest = new mongoose.Schema({
     type: String,
     required: true,
   },
+  messages: [
+    {
+      role: { type: String, required: true },
+      content: { type: String, required: true },
+    },
+  ],
   requestType: {
-    type: String,
-    required: true,
-  },
-  prompt: {
-    type: String,
-    required: true,
-  },
-  answer: {
     type: String,
     required: true,
   },
@@ -31,5 +29,8 @@ const conversacionRequest = new mongoose.Schema({
   },
 });
 
-const ConversacionRequest = mongoose.model('conversacionRequest', conversacionRequest);
+const ConversacionRequest = mongoose.model(
+  "conversacionRequest",
+  conversacionRequest
+);
 module.exports = ConversacionRequest;

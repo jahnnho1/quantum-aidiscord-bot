@@ -1,6 +1,5 @@
 const dotenv = require("dotenv");
 dotenv.config();
-const { almacenarConversacionBD } = require("./utils/funcionesUsers.js");
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
   apiKey: process.env.GTP_TOKEN,
@@ -32,14 +31,6 @@ async function conversationChat(data) {
     // Agregar el mensaje de la IA al historial
     history.push(iaMessage);
     userHistories.set(userId, history);
-    almacenarConversacionBD(
-      response.data.id,
-      username,
-      discordId,
-      requestType,
-      prompt,
-      answer
-    );
     console.log(userHistories);
     return answer;
   } else {
