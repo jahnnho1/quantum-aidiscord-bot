@@ -27,6 +27,7 @@ const client = new Client({
 client.on("ready", async () => {
   client.user.setActivity("Bot humanitario.");
   console.log(`Ready! Logged in as ${client.user.tag}`);
+  
 });
 
 client.on(Events.MessageCreate, async (data) => {

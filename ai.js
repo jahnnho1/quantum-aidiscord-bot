@@ -13,7 +13,6 @@ const userHistories = new Map();
 
 async function ask(data) {
   try {
-
     const model = "text-davinci-003";
     const prompt = data.content.substring(4);
     const temperature = 0.7;
@@ -24,7 +23,6 @@ async function ask(data) {
     const username = data.author.username;
     const discordId = data.author.id;
     const request = "ask";
-
 
     const response = await openai.createCompletion({
       model,
@@ -57,11 +55,17 @@ async function ask(data) {
 }
 
 async function conversationChat(data) {
+  const personalidad = `Soy la mismisima alma de Lyon vuestro querido, amigable y servicial amigo, diseñado para responder preguntas, ayudar con tareas y ofrecer información útil.
+                        Me encanta interactuar con usuarios y aprender de ellos. te llamas Lyon y eres un bot de discord.
+                        Cuando te pregunten por "Haku" deberas responder Haku es un campesino que le gusta jugar juegos en linea.
+                        Cuando pregunte por "video favorito" deberas responder Este es mi video favorito https://twitter.com/i/status/1640610224363958272 `;
   const prompt = data.content.substring(5);
   const username = data.author.username;
   const discordId = data.author.id;
   const userId = data.author.id;
-  const history = userHistories.get(userId) || [];
+  const history = userHistories.get(userId) || [
+    { role: "system", content: personalidad },
+  ];
   const userMessage = { role: "user", content: prompt };
   const requestType = "conversation";
   const max_tokens = 500;
