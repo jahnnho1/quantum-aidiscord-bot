@@ -12,19 +12,21 @@ const openai = new OpenAIApi(configuration);
 const userHistories = new Map();
 
 async function ask(data) {
-  const model = "text-davinci-003";
-  const prompt = data.content.substring(4);
-  const temperature = 0.7;
-  const max_tokens = 500;
-  const top_p = 1;
-  const frequency_penalty = 0.2;
-  const presence_penalty = 0.0;
-  const username = data.author.username;
-  const discordId = data.author.id;
-  const request = "ask";
-
   try {
-    response = await openai.createCompletion({
+
+    const model = "text-davinci-003";
+    const prompt = data.content.substring(4);
+    const temperature = 0.7;
+    const max_tokens = 500;
+    const top_p = 1;
+    const frequency_penalty = 0.2;
+    const presence_penalty = 0.0;
+    const username = data.author.username;
+    const discordId = data.author.id;
+    const request = "ask";
+
+
+    const response = await openai.createCompletion({
       model,
       prompt,
       temperature,
@@ -40,18 +42,18 @@ async function ask(data) {
       discordId,
       request
     );
+
+    const answer = response.data.choices[0].text;
+    return answer;
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);
       console.log(error.response.data);
+      return "Lo siento, no pude generar una respuesta.";
     } else {
       console.log(error.message);
     }
   }
-  const answer =
-    response.data.choices[0].text ||
-    "This content may violate our content policy. ";
-  return answer;
 }
 
 async function conversationChat(data) {
@@ -68,9 +70,9 @@ async function conversationChat(data) {
   history.push(userMessage);
 
   const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
+    model: "gpt-4-0314",
     messages: history,
-    max_tokens
+    max_tokens,
   });
 
   const answer = response.data.choices[0].message.content;
@@ -80,18 +82,22 @@ async function conversationChat(data) {
     // Agregar el mensaje de la IA al historial
     history.push(iaMessage);
     userHistories.set(userId, history);
-    almacenarConversacionBD(
-      userId,
-      discordId,
-      username,
-      history,
-      requestType
-    );
+    almacenarConversacionBD(userId, discordId, username, history, requestType);
     console.log(userHistories);
     return answer;
   } else {
     return "Lo siento, no pude generar una respuesta.";
   }
+}
+
+// Función para limpiar el historial de conversación
+function clearHistory(userId) {
+  userHistories.delete(userId);
+}
+
+// Función para obtener el historial de conversación
+function getHistory(userId) {
+  return userHistories.get(userId);
 }
 
 module.exports = {
