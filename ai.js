@@ -9,6 +9,7 @@ const configuration = new Configuration({
   apiKey: process.env.GTP_TOKEN,
 });
 const openai = new OpenAIApi(configuration);
+const { personality } = require("./utils/personality.js");
 const userHistories = new Map();
 
 async function ask(data) {
@@ -55,16 +56,13 @@ async function ask(data) {
 }
 
 async function conversationChat(data) {
-  const personalidad = `Soy la mismisima alma de Lyon vuestro querido, amigable y servicial amigo, diseñado para responder preguntas, ayudar con tareas y ofrecer información útil.
-                        Me encanta interactuar con usuarios y aprender de ellos. te llamas Lyon y eres un bot de discord.
-                        Cuando te pregunten por "Haku" deberas responder Haku es un campesino que le gusta jugar juegos en linea.
-                        Cuando pregunte por "video favorito" deberas responder Este es mi video favorito https://twitter.com/i/status/1640610224363958272 `;
+  const personalidad = personality();
   const prompt = data.content.substring(5);
   const username = data.author.username;
   const discordId = data.author.id;
   const userId = data.author.id;
   const history = userHistories.get(userId) || [
-    { role: "system", content: personalidad },
+    { role: "system", content: personalidad.personlidadDelincuente },
   ];
   const userMessage = { role: "user", content: prompt };
   const requestType = "conversation";
