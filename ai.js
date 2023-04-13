@@ -56,38 +56,48 @@ async function ask(data) {
 }
 
 async function conversationChat(data) {
-  const personalidad = personality();
-  const prompt = data.content.substring(5);
-  const username = data.author.username;
-  const discordId = data.author.id;
-  const userId = data.author.id;
-  const history = userHistories.get(userId) || [
-    { role: "system", content: personalidad.personlidadDelincuente },
-  ];
-  const userMessage = { role: "user", content: prompt };
-  const requestType = "conversation";
-  const max_tokens = 500;
+  try {
+    const personalidad = personality();
+    const prompt = data.content.substring(5);
+    const username = data.author.username;
+    const discordId = data.author.id;
+    const userId = data.author.id;
+    const history = userHistories.get(userId) || [
+      { role: "system", content: personalidad.chatGPT4 },
+    ];
+    const userMessage = { role: "user", content: prompt };
+    const requestType = "conversation";
+    const max_tokens = 500;
 
-  // Agregar el mensaje del usuario al historial
-  history.push(userMessage);
+    // Agregar el mensaje del usuario al historial
+    history.push(userMessage);
 
-  const response = await openai.createChatCompletion({
-    model: "gpt-4-0314",
-    messages: history,
-    max_tokens,
-  });
+    const response = await openai.createChatCompletion({
+      model: "gpt-4-0314",
+      messages: history,
+      max_tokens,
+    });
 
-  const answer = response.data.choices[0].message.content;
-  console.log(answer);
-  if (answer) {
-    const iaMessage = { role: "assistant", content: answer };
-    // Agregar el mensaje de la IA al historial
-    history.push(iaMessage);
-    userHistories.set(userId, history);
-    almacenarConversacionBD(userId, discordId, username, history, requestType);
-    console.log(userHistories);
-    return answer;
-  } else {
+    const answer = response.data.choices[0].message.content;
+    console.log(answer);
+    if (answer) {
+      const iaMessage = { role: "assistant", content: answer };
+      // Agregar el mensaje de la IA al historial
+      history.push(iaMessage);
+      userHistories.set(userId, history);
+      almacenarConversacionBD(
+        userId,
+        discordId,
+        username,
+        history,
+        requestType
+      );
+      console.log(userHistories);
+      return answer;
+    } else {
+      return "Lo siento, no pude generar una respuesta.";
+    }
+  } catch {
     return "Lo siento, no pude generar una respuesta.";
   }
 }
